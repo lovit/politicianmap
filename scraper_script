@@ -1,1 +1,1 @@
-python searching_news_comments.py --verbose --comments --begin_date 2013-01-01 --end_date 2019-02-18 --header politician --query_file /mnt/lovit/works/politicianmap/querylist.txt --root_directory /mnt/sdb1/politicianmap/
+python searching_news_comments.py --verbose --comments --begin_date 2013-01-01 --end_date 2019-03-10 --header politician --query_file ../politicianmap/querylist.txt --root_directory /mnt/sdb1/politicianmap/
