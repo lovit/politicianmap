@@ -79,3 +79,63 @@ class News:
             with open(path, encoding='utf-8') as f:
                 for doc in f:
                     yield doc
+
+from glob import glob
+
+dirname = '/workspace/data/politician/0/'
+begin_date = '2018-01-01'
+end_date='2018-01-03'
+
+def parse_date(path):
+    """
+    Arguments
+    ---------
+    path : str
+        File path
+
+    Usage
+    -----
+        >>> path = '/workspace/data/politician/0/news/2013-01-02_politician.index'
+        >>> parse_date(path)
+        $ '2013-01-02'
+    """
+    return path.split('/')[-1][:10]
+
+def line_counts(dirname, begin_date, end_date):
+    """
+    Arguments
+    ---------
+    dirname : str
+        Directory path
+    begin_date : str
+        yyyy-mm-dd format
+    end_date : str
+        yyyy-mm-dd format
+
+    Returns
+    -------
+    List of tuple
+        It consists with (date, num lines)
+
+    Usage
+    -----
+        >>> dirname = '/workspace/data/politician/0/'
+        >>> begin_date = '2018-01-01'
+        >>> end_date='2018-01-03'
+
+        $ [('2018-01-01', 2),
+           ('2018-01-02', 7),
+            ('2018-01-03', 3)]
+    """
+
+    indexpath = sorted(glob('{}/news/*.index'.format(dirname)))
+    indexpath = [p for p in indexpath if begin_date <= parse_date(p) <= end_date]
+    counts = [(parse_date(p), line_count(p)) for p in indexpath]
+    return counts
+
+def line_count(path):
+    n_line = 0
+    with open(path, encoding='utf-8') as f:
+        for _ in f:
+            n_line += 1
+    return n_line
