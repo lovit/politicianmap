@@ -9,11 +9,16 @@ class News:
         >>>     print(doc[:200], end='\n\n')
     """
 
-    def __init__(self, dirname):
+    def __init__(self, dirname, begin_date=None, end_date=None):
         self.dirname = dirname
         self.newspath = sorted(glob('{}/news/*.txt'.format(dirname)))
         self.indexpath = sorted(glob('{}/news/*.index'.format(dirname)))
+
+        begin_date, end_date = self._set_date(begin_date, end_date)
+        self.newspath = [p for p in self.newspath if begin_date <= parse_date(p) <= end_date]
+        self.indexpath = [p for p in self.indexpath if begin_date <= parse_date(p) <= end_date]
         self.dates = [p.split('/')[-1][:10] for p in self.newspath]
+
         print('{} has news of {} dates, index of {} dates'.format(
             dirname, len(self.newspath), len(self.indexpath)))
 
