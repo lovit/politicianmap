@@ -13,6 +13,8 @@ class News:
         self.dirname = dirname
         self.newspath = sorted(glob('{}/news/*.txt'.format(dirname)))
         self.indexpath = sorted(glob('{}/news/*.index'.format(dirname)))
+        if (begin_date is None) or (end_date is None):
+            self.dates = [p.split('/')[-1][:10] for p in self.newspath]
 
         begin_date, end_date = self._set_date(begin_date, end_date)
         self.newspath = [p for p in self.newspath if begin_date <= parse_date(p) <= end_date]
@@ -21,6 +23,11 @@ class News:
 
         print('{} has news of {} dates, index of {} dates'.format(
             dirname, len(self.newspath), len(self.indexpath)))
+
+    def __iter__(self):
+        for doc in self.get_news():
+            if doc:
+                yield doc
 
     def get_news(self, begin_date=None, end_date=None):
         """
