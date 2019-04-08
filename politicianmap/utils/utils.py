@@ -9,10 +9,12 @@ class News:
         >>>     print(doc[:200], end='\n\n')
     """
 
-    def __init__(self, dirname, begin_date=None, end_date=None):
+    def __init__(self, dirname, indexdirname=None, begin_date=None, end_date=None):
         self.dirname = dirname
+        if indexdirname is None:
+            indexdirname = dirname
         self.newspath = sorted(glob('{}/news/*.txt'.format(dirname)))
-        self.indexpath = sorted(glob('{}/news/*.index'.format(dirname)))
+        self.indexpath = sorted(glob('{}/news/*.index'.format(indexdirname)))
         if (begin_date is None) or (end_date is None):
             self.dates = [p.split('/')[-1][:10] for p in self.newspath]
 
@@ -22,7 +24,7 @@ class News:
         self.dates = [p.split('/')[-1][:10] for p in self.newspath]
 
         assert len(self.newspath) == len(self.indexpath)
-        n_docs = sum(c for _, c in line_counts(dirname, begin_date, end_date))
+        n_docs = sum(c for _, c in line_counts(indexdirname, begin_date, end_date))
         print('{} has news of {} dates, {} docs'.format(
             dirname, len(self.newspath), n_docs))
 
