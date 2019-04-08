@@ -21,8 +21,10 @@ class News:
         self.indexpath = [p for p in self.indexpath if begin_date <= parse_date(p) <= end_date]
         self.dates = [p.split('/')[-1][:10] for p in self.newspath]
 
-        print('{} has news of {} dates, index of {} dates'.format(
-            dirname, len(self.newspath), len(self.indexpath)))
+        assert len(self.newspath) == len(self.indexpath)
+        n_docs = sum(c for _, c in line_counts(dirname, begin_date, end_date))
+        print('{} has news of {} dates, {} docs'.format(
+            dirname, len(self.newspath), n_docs))
 
     def __iter__(self):
         for doc in self.get_news():
