@@ -30,7 +30,7 @@ def noun_extraction(data_dirname, noun_dirname, idx, debug=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dirname', type=str, default='/workspace/data/politician_norm/')
-    parser.add_argument('--noun_dirname', type=str, default='/workspace/lovit/politician/noun_extraction/')
+    parser.add_argument('--noun_dirname', type=str, default='/workspace/lovit/politicianmap/noun_extraction/')
     parser.add_argument('--politician', type=int, nargs='*', default=None)
     parser.add_argument('--debug', dest='debug', action='store_true')
 
