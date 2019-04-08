@@ -80,11 +80,12 @@ class News:
                 for doc in f:
                     yield doc
 
-from glob import glob
 
-dirname = '/workspace/data/politician/0/'
-begin_date = '2018-01-01'
-end_date='2018-01-03'
+def check_dir(path):
+    dirname = os.path.dirname(path)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+        print('created dir {}'.format(dirname))
 
 def parse_date(path):
     """
