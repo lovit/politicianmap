@@ -9,7 +9,7 @@ def initialize_figure(title, length):
         ("y", "$y"),
         ('dist', '@image'),
     ]
-    return figure(x_range=(0, length), y_range=(0, length), tooltips=tooltips)
+    return figure(x_range=(0, length), y_range=(0, length), tooltips=tooltips, title=title)
 
 def draw_pairwise_distance(pdist, p=None, x=None, y=None, dw=None, dh=None, title=None, palette="Greys256"):
     """
