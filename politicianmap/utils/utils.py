@@ -160,3 +160,19 @@ def line_count(path):
         for _ in f:
             n_line += 1
     return n_line
+
+def load_docs(path):
+    """
+    Argument
+    --------
+    path : str
+        File path
+
+    Returns
+    -------
+    List of str
+        Each str is a news article. It uses double space as sentence separator
+    """
+    with open(path, encoding='utf-8') as f:
+        docs = [line.strip() for line in f]
+    return docs

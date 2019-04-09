@@ -2,7 +2,7 @@ import argparse
 import os
 from glob import glob
 from politicianmap.utils import News
-from politicianmap.utils import parse_date, line_counts, check_dir
+from politicianmap.utils import parse_date, line_counts, check_dir, load_docs
 from soynlp.tokenizer import LTokenizer
 
 
@@ -50,11 +50,6 @@ def tokenize(docs, dictionary):
         return ' '.join(sent_)
 
     docs = ['  '.join([tokenize_sent(sent) for sent in doc.split('  ')]) for doc in docs]
-    return docs
-
-def load_docs(path):
-    with open(path, encoding='utf-8') as f:
-        docs = [line.strip() for line in f]
     return docs
 
 def write_docs(docs, path):
