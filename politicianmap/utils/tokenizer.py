@@ -156,7 +156,6 @@ def create_bow(date_docs, tokenizer, vocab_to_idx):
         idx_to_date.append(date)
 
         # count term frequency
-        docs = news.get_news(date, date)
         tf = Counter(word for doc in docs for word in tokenizer(doc))
         for term, count in tf.items():
             j = vocab_to_idx.get(term, -1)
@@ -165,5 +164,9 @@ def create_bow(date_docs, tokenizer, vocab_to_idx):
             rows.append(i)
             cols.append(j),
             data.append(count)
-    bow = csr_matrix((data, (rows, cols)))
+
+    # make sparse matrix
+    n_rows = len(idx_to_date)
+    n_cols = len(vocab_to_idx)
+    bow = csr_matrix((data, (rows, cols)), shape=(n_rows, n_cols))
     return bow, idx_to_date
