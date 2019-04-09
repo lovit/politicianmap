@@ -50,15 +50,15 @@ class AllInput:
         print('\r[Politician all] iter = {0}, files = {1} / {1} was done '.format(self.n_iter, self.n_files))
 
 
-def train_doc2vec_a_politician(data_dirname, index_dirnae, idx, debug):
+def train_doc2vec_a_politician(data_dirname, index_dirname, idx, debug):
     # variables for debug
     begin_date, end_date = '2018-01-01', '2018-01-10'
 
     # create News instance
     if debug:
-        news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirnae, idx), begin_date, end_date)
+        news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirname, idx), begin_date, end_date)
     else:
-        news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirnae, idx))
+        news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirname, idx))
 
     doc2vec = Doc2Vec( Input(news, header='[Politician %d]'%idx), min_count=15 )
     doc2vec_path = '/workspace/lovit/politicianmap/doc2vec_models/doc2vec_politician_{}.pkl'.format(idx)
@@ -77,20 +77,20 @@ def train_doc2vec_for_all_politician(data_dirname, debug):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dirname', type=str, default='/workspace/lovit/politicianmap/tokenized/')
-    parser.add_argument('--index_dirnae', type=str, default='/workspace/data/politician_norm/')
+    parser.add_argument('--index_dirname', type=str, default='/workspace/data/politician_norm/')
     parser.add_argument('--politician', type=int, nargs='*', default=None)
     parser.add_argument('--debug', dest='debug', action='store_true')
 
     args = parser.parse_args()
     data_dirname = os.path.abspath(args.data_dirname)
-    index_dirnae = os.path.abspath(args.index_dirnae)
+    index_dirname = os.path.abspath(args.index_dirname)
     debug = args.debug
     politician = args.politician
     if politician is None:
         politician = [i for i in range(20)]
 
     for idx in politician:
-        train_doc2vec_a_politician(data_dirname, index_dirnae, idx, debug)
+        train_doc2vec_a_politician(data_dirname, index_dirname, idx, debug)
         print('trained politician {} doc2vec model'.format(idx), end='\n\n')
         if debug and idx >= 3:
             break
