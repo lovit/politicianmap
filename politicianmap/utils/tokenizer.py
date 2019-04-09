@@ -10,6 +10,10 @@ class Tokenizer:
         if not filters:
             filters = [lambda x:x]
         self.filters = [f for f in filters]
+
+    def __call__(self, doc):
+        return self.tokenize(doc)
+
     def tokenize(self, doc):
         """
         Argument
