@@ -32,7 +32,7 @@ def scan_universial_vocabulary(data_dirname, index_dirname, output_dirname, debu
         else:
             news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirname, idx))
         news_sequence.append(news)
-    merged_data_news = MergedNews([DateDocsDecorator(news, min_doc=10) for news in news_sequence])
+    merged_data_news = MergedNews([DateDocsDecorator(news, min_doc=15) for news in news_sequence])
     tokenizer = Tokenizer(Tagfilter({'/R'}))
     idx_to_vocab, vocab_to_idx = scan_vocabulary(merged_data_news, tokenizer, min_count=5 if debug else 20)
     # vocab write

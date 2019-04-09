@@ -9,7 +9,7 @@ from politicianmap.utils import News
 
 
 class Input:
-    def __init__(self, news, header='', min_doc=10):
+    def __init__(self, news, header='', min_doc=15):
         self.news = news
         self.n_iter = 0
         self.header = header
@@ -33,7 +33,7 @@ class Input:
 
 
 class AllInput:
-    def __init__(self, tokenized_dir, debug=False, min_doc=10):
+    def __init__(self, tokenized_dir, debug=False, min_doc=15):
         self.tokenized_dir = tokenized_dir
         self.paths = glob(tokenized_dir+'/*/news/*.txt')
         self.n_files = len(self.paths)
