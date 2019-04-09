@@ -143,7 +143,7 @@ class News:
                 continue
             with open(path, encoding='utf-8') as f:
                 for doc in f:
-                    yield doc
+                    yield doc.strip()
 
 
 def check_dir(path):
