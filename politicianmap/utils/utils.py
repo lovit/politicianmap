@@ -31,11 +31,32 @@ class News:
             dirname, len(self.newspath), self.n_docs))
 
     def __iter__(self):
-        for doc in self.get_news():
+        for doc in self.iter_news():
             if doc:
                 yield doc
 
     def get_news(self, begin_date=None, end_date=None):
+        """
+        Arguments
+        ---------
+        begin_date : str
+            yyyy-mm-dd format
+            If it is None, use first date of news in dirname
+            Default is None
+        end_date : str
+            yyyy-mm-dd format
+            If it is None, use first date of news in dirname
+            Default is None
+
+        Returns
+        ------
+        list of str
+            A str is a doublespace line format document of a news
+        """
+
+        return [doc for doc in self.iter_news(begin_date, end_date)]
+
+    def iter_news(self, begin_date=None, end_date=None):
         """
         Arguments
         ---------
@@ -59,6 +80,30 @@ class News:
             yield doc
 
     def get_index(self, begin_date=None, end_date=None):
+        """
+        Arguments
+        ---------
+        begin_date : str
+            yyyy-mm-dd format
+            If it is None, use first date of news in dirname
+            Default is None
+        end_date : str
+            yyyy-mm-dd format
+            If it is None, use first date of news in dirname
+            Default is None
+
+        Returns
+        ------
+        list of str
+            Each str is tap separated index (press/yy/mm/dd/article, category, date, title)
+            For example,
+
+                $ 421/2018/01/02/0003129236	100	2018-01-02 15:53	'NLL 파문' 대화록 유출 수사 빈손…검찰 "기소 없을듯"
+        """
+
+        return [index for index in self.iter_index(begin_date, end_date)]
+
+    def iter_index(self, begin_date=None, end_date=None):
         """
         Arguments
         ---------
