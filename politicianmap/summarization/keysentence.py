@@ -1,4 +1,4 @@
-from politicianmap.tokenizer import recover_rtokenized_sent
+from politicianmap.utils import recover_rtokenized_sent
 
 
 def select_keysentence(keywords, docs, topk=5):
