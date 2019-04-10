@@ -99,7 +99,7 @@ print(point_shift_distance(pdist, 1510, 1519)) # 0.7833967209213221
 print(point_shift_distance(pdist, 1510, 1520)) # 0.5805452845955645
 ```
 
-앞의 3 칸을 base 로, 다음 1 칸을 segment boundary 밖의 점으로 가정할 때의 거리값이다.
+앞의 3 칸을 base 로 고정한 뒤, 다음 1 칸을 segment boundary 밖의 점으로 가정할 때의 거리값이다.
 
 ```python
 from politicianmap.segmentation import shift_distance
@@ -109,7 +109,7 @@ dist = shift_distance(pdist)
 
 ![](figures/sequence_segmentation_and_labeling_kimmoosung_shift_dist.png)
 
-이를 이용하여 정사각형을 추출한다. 
+이를 이용하여 정사각형을 추출한다. Begin index b 를 0 부터 시작하여 max_length 까지 (b+1, b+max_length) 로 end index e 를 증가시키며 위의 거리값이 급격히 커지는 end index 를 찾는다. 이 지점까지를 segment 로 자른 뒤, b 를 end index 로 업데이트 한다. b 가 last sequence point 가 될 때 까지 이를 반복한다.
 
 ```python
 from politicianmap.segmentation import find_rectangular
