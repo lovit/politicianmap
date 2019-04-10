@@ -4,6 +4,7 @@ from .tokenizer import Tagfilter
 from .tokenizer import DateDocsDecorator
 from .tokenizer import create_bow
 from .tokenizer import scan_vocabulary
+from .tokenizer import recover_rtokenized_sent
 from .utils import News
 from .utils import check_dir
 from .utils import parse_date

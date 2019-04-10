@@ -170,3 +170,16 @@ def create_bow(date_docs, tokenizer, vocab_to_idx):
     n_cols = len(vocab_to_idx)
     bow = csr_matrix((data, (rows, cols)), shape=(n_rows, n_cols))
     return bow, idx_to_date
+
+def recover_rtokenized_sent(sent):
+    """
+        >>> recover_rtokenized_sent('지방선거 참패 이후 당 혁신 과/R 재정비 를/R 놓고')
+        $ '지방선거 참패 이후 당 혁신과 재정비를 놓고'
+    """
+    sent_ = []
+    for word in sent.split():
+        if '/R' in word:
+            sent_.append(word[:-2])
+        else:
+            sent_.append(' '+word)
+    return ''.join(sent_).strip()
