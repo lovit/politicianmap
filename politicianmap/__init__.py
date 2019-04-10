@@ -3,4 +3,5 @@ __author__ = 'lovit'
 __name__ = 'politicianmap'
 
 from . import representation
+from . import segmentation
 from . import utils
