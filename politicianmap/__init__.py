@@ -4,4 +4,5 @@ __name__ = 'politicianmap'
 
 from . import representation
 from . import segmentation
+from . import summarization
 from . import utils
