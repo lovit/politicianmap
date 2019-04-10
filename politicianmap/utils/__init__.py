@@ -10,3 +10,4 @@ from .utils import parse_date
 from .utils import line_counts
 from .utils import load_docs
 from .visualizer import draw_pairwise_distance
+from .visualizer import draw_line_plot

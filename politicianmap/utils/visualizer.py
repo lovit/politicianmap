@@ -26,3 +26,9 @@ def draw_pairwise_distance(pdist, p=None, x=None, y=None, dw=None, dh=None, titl
         dh = pdist.shape[1]
     p.image([pdist], x=x, y=y, dw=dw, dh=dh, palette=palette)
     return p
+
+def draw_line_plot(y, width=1200, height=200):
+    x = [i for i in range(y.shape[0])]
+    p = figure(plot_width=width, plot_height=height)
+    p.line(x, y)
+    return p
