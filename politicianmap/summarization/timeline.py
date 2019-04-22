@@ -1,3 +1,4 @@
+import math
 from .keyword import extract_keywords
 from .keysentence import summarize
 
@@ -66,6 +67,8 @@ def as_html(timeline):
     even_tr = '\n<tr><td class="tg-baqh">{}<br>~<br>{}</td><td class="tg-0lax">{}</td><td class="tg-0lax">{}</td></tr>'
     odd_tr = '\n<tr><td class="tg-uqo3">{}<br>~<br>{}</td><td class="tg-kftd">{}</td><td class="tg-kftd">{}</td></tr>'
     for i, (b_date, e_date, keywords, keysentences) in enumerate(timeline):
+        keysents = ' '.join(keysentences)
+        keywords = [w for w, _, _ in keywords if w in keysents]
         keywords_str = keyword_to_str(keywords)
         keysents_str = keysent_to_str(keysentences)
         if i % 2 == 0:
@@ -74,9 +77,9 @@ def as_html(timeline):
             tr += odd_tr.format(b_date, e_date, keywords_str, keysents_str)
     return HTML_TEMPLATE % (tr)
 
-def keyword_to_str(keywords, n_words_in_line=5, max_print=30):
+def keyword_to_str(keywords, n_words_in_line=5):
     n = n_words_in_line
-    strs = ''.join(w+', ' if i % n != (n-1) else w+'<br>' for i, (w, _, _) in enumerate(keywords[:max_print])).strip()
+    strs = ''.join(w+', ' if i % n != (n-1) else w+'<br>' for i, w in enumerate(keywords)).strip()
     if strs[-1] == ',':
         strs = strs[:-1]
     return strs
