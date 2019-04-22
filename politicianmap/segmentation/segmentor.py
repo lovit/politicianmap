@@ -13,6 +13,23 @@ def shift_distance(pdist, window=1):
     return dist
 
 def find_rectangular(pdist, threshold=0.4, min_length=2, max_length=20):
+    """
+    Arguments
+    ---------
+    pdist : numpy.ndarray
+        Pairwise distance matrix
+    threshold : float
+        Minimum inner distance of segments
+    min_length : int
+        Minimum dates of a segment
+    max_length : int
+        Maximum dates of a segment
+
+    Returns
+    -------
+    list of tuple
+        Each tuple is (begin index, end index, length)
+    """
     n = pdist.shape[0]
     segments = []
     b = 1
