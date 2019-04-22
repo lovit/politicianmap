@@ -13,9 +13,13 @@ def iter_dates():
     dates.append(('2019-01-01', '2019-03-10'))
     return dates
 
-def noun_extraction(data_dirname, noun_dirname, idx, debug=False):
+def noun_extraction(data_dirname, index_dirname, noun_dirname, idx, debug=False):
     for begin_date, end_date in iter_dates():
-        news = News('{}/{}/'.format(data_dirname, idx), begin_date, end_date)
+        news = News(
+            '{}/{}/'.format(data_dirname, idx),
+            '{}/{}/'.format(index_dirname, idx),
+            begin_date, end_date
+        )
         noun_extractor = LRNounExtractor_v2(extract_compound=True, verbose=False)
         noun_score = noun_extractor.train_extract(news)
         path = '{}/{}/{}_{}'.format(noun_dirname, idx, begin_date, end_date)
@@ -30,12 +34,14 @@ def noun_extraction(data_dirname, noun_dirname, idx, debug=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dirname', type=str, default='/workspace/data/politician_norm/')
+    parser.add_argument('--index_dirname', type=str, default='/workspace/data/politician_norm/')
     parser.add_argument('--noun_dirname', type=str, default='/workspace/lovit/politicianmap/noun_extraction/')
     parser.add_argument('--politician', type=int, nargs='*', default=None)
     parser.add_argument('--debug', dest='debug', action='store_true')
 
     args = parser.parse_args()
     data_dirname = os.path.abspath(args.data_dirname)
+    index_dirname = os.path.abspath(args.index_dirname)
     noun_dirname = os.path.abspath(args.noun_dirname)
     debug = args.debug
     politician = args.politician
@@ -43,7 +49,7 @@ def main():
         politician = [i for i in range(20)]
 
     for idx in politician:
-        noun_extraction(data_dirname, noun_dirname, idx, debug)
+        noun_extraction(data_dirname, index_dirname, noun_dirname, idx, debug)
         print('-' *40, end='\n\n')
 
 if __name__ == '__main__':
