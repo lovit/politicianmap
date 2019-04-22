@@ -22,7 +22,9 @@ class News:
         self.newspath = [p for p in self.newspath if begin_date <= parse_date(p) <= end_date]
         self.indexpath = [p for p in self.indexpath if begin_date <= parse_date(p) <= end_date]
 
-        assert len(self.newspath) == len(self.indexpath)
+        if len(self.newspath) != len(self.indexpath):
+            print('num news  = {}'.format(len(self.newspath)))
+            print('num index = {}'.format(len(self.indexpath)))
 
         self.dates = [p.split('/')[-1][:10] for p in self.newspath]
         self.date_to_ndocs = line_counts(indexdirname, begin_date, end_date)
