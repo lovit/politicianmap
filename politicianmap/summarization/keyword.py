@@ -12,7 +12,7 @@ def proportion_ratio(pos, ref):
     ratio = np.nan_to_num(ratio)
     return ratio
 
-def extract_keywords(bow, doc_idx, idx_to_vocab, margin=1, ref_size=2, topk1=100, topk2=30):
+def extract_keywords(bow, doc_idx, idx_to_vocab, margin=1, ref_size=2, topk1=100, topk2=30, use_bothsize=True):
     """
     Arguments
     ---------
@@ -31,6 +31,9 @@ def extract_keywords(bow, doc_idx, idx_to_vocab, margin=1, ref_size=2, topk1=100
         Number of keyword candidates by word occurrence
     topk2 : int
         Number of keywords selected from topk1 candidates by proportion ratio keyword score
+    use_bothsize : Boolean
+        If True, use before and after dates as reference period.
+        Else, use only before dates as reference period.
 
     Returns
     -------
@@ -51,7 +54,8 @@ def extract_keywords(bow, doc_idx, idx_to_vocab, margin=1, ref_size=2, topk1=100
     period_end = max(doc_idx)
     period_len = len(doc_idx)
     ref_idx = [i for i in range(max(0, period_begin - margin - int(period_len * ref_size)), period_begin)]
-    ref_idx += [i for i in range(min(period_end + margin + int(period_len * ref_size), n_docs), n_docs)]
+    if use_bothsize:
+        ref_idx += [i for i in range(min(period_end + margin + int(period_len * ref_size), n_docs), n_docs)]
     ref = to_proportion(bow, ref_idx)
     ratio = proportion_ratio(pos, ref)
 
