@@ -66,6 +66,8 @@ def select_keysentences(x, keyvec, texts, initial_penalty, topk=10, diversity=0.
         The length of keysentences is topk at most.
     """
 
+    diversity = diversity + 0.00001 # for truncation error
+
     dist = pairwise_distances(x, keyvec, metric='cosine').reshape(-1)
     dist = dist + initial_penalty
 
@@ -77,7 +79,7 @@ def select_keysentences(x, keyvec, texts, initial_penalty, topk=10, diversity=0.
         idx_all_distance = pairwise_distances(
             x, x[idx].reshape(1,-1), metric='cosine').reshape(-1)
         penalty = np.zeros(idx_all_distance.shape[0])
-        penalty[np.where(idx_all_distance < diversity)[0]] = 2
+        penalty[np.where(idx_all_distance <= diversity)[0]] = 2
         dist += penalty
     return idxs
 
