@@ -23,6 +23,14 @@ def extract_keywords(bow, doc_idx, idx_to_vocab, margin=1, ref_size=2, topk1=100
         dtype is numpy.int
     idx_to_vocab : list of str
         Index to vocab
+    margin : int
+        Date difference
+    ref_size : float
+        Scale factor between length of target period and length of reference period
+    topk1 : int
+        Number of keyword candidates by word occurrence
+    topk2 : int
+        Number of keywords selected from topk1 candidates by proportion ratio keyword score
 
     Returns
     -------
