@@ -1,8 +1,9 @@
 import argparse
 import os
+from scipy.io import mmwrite
 from politicianmap.utils import check_dir
 from politicianmap.utils import News, DateDocsDecorator
-from politicianmap.utils import Tokenizer, Tagfilter, scan_vocabulary
+from politicianmap.utils import Tokenizer, Tagfilter, scan_vocabulary, create_bow
 
 
 def write_list(path, items):
@@ -68,7 +69,34 @@ def main():
     check_dir(path)
     write_list(path, idx_to_vocab_univ)
 
+    tokenizer = Tokenizer(Tagfilter({'/R'}))
+
     # scan their own vocabulary and vectorize
+    for idx in index:
+        # create data loader
+        if debug:
+            news = News('{}/{}/'.format(data_dir, idx), '{}/{}/'.format(index_dir, idx),
+                begin_date = '2018-01-01', end_date = '2018-01-10')
+        else:
+            news = News('{}/{}/'.format(data_dir, idx), '{}/{}/'.format(index_dir, idx))
+        date_news = DateDocsDecorator(news, min_doc=min_doc)
+        # scan their own vocabulary
+        print('scaning vocabulary {}'.format(idx))
+        idx_to_vocab, vocab_to_idx = scaning_vocabulary(date_news, debug)
+        path = '{0}/{1}/{1}_vocab.txt'.format(output_dir, idx)
+        check_dir(path)
+        write_list(path, idx_to_vocab)
+
+        for date, docs in date_news:
+            # vectorize with their own vocabulary
+            bow = create_bow(docs, tokenizer, vocab_to_idx)
+            path = '{0}/{1}/{1}_{2}.mtx'.format(output_dir, idx, date)
+            mmwrite(path, bow)
+            # vectorize with universal vocabulary
+            bow = create_bow(docs, tokenizer, vocab_to_idx)
+            path = '{0}/{1}/{1}_{2}.mtx'.format(output_dir, idx, date)
+            mmwrite(path, bow)
+            print('created bow {} / {}'.format(idx, date))
 
 if __name__ == '__main__':
     main()
