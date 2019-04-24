@@ -171,6 +171,46 @@ def create_bow_date_merged(date_docs, tokenizer, vocab_to_idx):
     bow = csr_matrix((data, (rows, cols)), shape=(n_rows, n_cols))
     return bow, idx_to_date
 
+def create_bow(docs, tokenizer, vocab_to_idx):
+    """
+    Arguments
+    ---------
+    docs : Any type iterable data such as list of str
+    tokenizer : callable
+        tokenizer(doc) : list of str
+    vocab_to_idx : {str:int}
+        Vocabulary index
+
+    Returns
+    -------
+    bow : scipy.sparse.csr_matrix
+        (date, term) frequency matrix
+
+    Usage
+    -----
+        >>> tokenizer = Tokenizer(Tagfilter({'/R'}))
+        >>> date_news = DateDocsDecorator(news, min_doc=10)
+        >>> idx_to_vocab, vocab_to_idx = scan_vocabulary(date_news, tokenizer, min_count=5)
+        >>> bow = create_bow(date_news, tokenizer, vocab_to_idx)
+    """
+    rows, cols, data = [], [], []
+    for i, doc in enumerate(docs):
+        # count term frequency
+        tf = Counter(tokenizer(doc))
+        for term, count in tf.items():
+            j = vocab_to_idx.get(term, -1)
+            if j == -1:
+                continue
+            rows.append(i)
+            cols.append(j),
+            data.append(count)
+
+    # make sparse matrix
+    n_rows = len(docs)
+    n_cols = len(vocab_to_idx)
+    bow = csr_matrix((data, (rows, cols)), shape=(n_rows, n_cols))
+    return bow
+
 def recover_rtokenized_sent(sent):
     """
         >>> recover_rtokenized_sent('지방선거 참패 이후 당 혁신 과/R 재정비 를/R 놓고')
