@@ -3,7 +3,7 @@ import os
 from glob import glob
 from politicianmap.utils import check_dir
 from politicianmap.utils import News, DateDocsDecorator
-from politicianmap.utils import Tokenizer, Tagfilter, scan_vocabulary, create_bow
+from politicianmap.utils import Tokenizer, Tagfilter, scan_vocabulary, create_bow_date_merged
 from scipy.io import mmwrite
 
 
@@ -21,12 +21,12 @@ def write_list(path, items):
         for item in items:
             f.write('{}\n'.format(item))
 
-def scan_universial_vocabulary(data_dirname, index_dirname, output_dirname, debug):
+def scan_universial_vocabulary(data_dirname, index_dirname, output_dirname, politician, debug):
     # variables for debug
     begin_date, end_date = '2018-01-01', '2018-01-10'
 
     news_sequence = []
-    for idx in range(20):
+    for idx in politician:
         if debug:
             news = News('{}/{}/'.format(data_dirname, idx), '{}/{}/'.format(index_dirname, idx), begin_date, end_date)
         else:
@@ -55,7 +55,7 @@ def train_bow_a_politician(data_dirname, index_dirname, output_dirname, idx, deb
     date_news = DateDocsDecorator(news, min_doc=10)
     if vocab_to_idx is None:
         idx_to_vocab, vocab_to_idx = scan_vocabulary(date_news, tokenizer, min_count=5 if debug else 20)
-    bow, idx_to_date = create_bow(date_news, tokenizer, vocab_to_idx)
+    bow, idx_to_date = create_bow_date_merged(date_news, tokenizer, vocab_to_idx)
     print('[Politician {}, {}]: bow shape = {}'.format(idx, head, bow.shape))
 
     # matrix write
@@ -84,7 +84,7 @@ def main():
         politician = [i for i in range(20)]
 
     check_dir(output_dirname)
-    univ_vocab_to_idx = scan_universial_vocabulary(data_dirname, index_dirname, output_dirname, debug)
+    univ_vocab_to_idx = scan_universial_vocabulary(data_dirname, index_dirname, output_dirname, politician, debug)
 
     for idx in politician:
         train_bow_a_politician(data_dirname, index_dirname, output_dirname, idx, debug)

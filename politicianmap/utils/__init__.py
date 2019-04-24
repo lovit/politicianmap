@@ -2,7 +2,7 @@ from .tokenizer import Stopwords
 from .tokenizer import Tokenizer
 from .tokenizer import Tagfilter
 from .tokenizer import DateDocsDecorator
-from .tokenizer import create_bow
+from .tokenizer import create_bow_date_merged
 from .tokenizer import scan_vocabulary
 from .tokenizer import recover_rtokenized_sent
 from .utils import News

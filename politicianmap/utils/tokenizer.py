@@ -124,7 +124,7 @@ def scan_vocabulary(date_docs, tokenizer, min_count=20):
     vocab_to_idx = {vocab:idx for idx, vocab in enumerate(idx_to_vocab)}
     return idx_to_vocab, vocab_to_idx
 
-def create_bow(date_docs, tokenizer, vocab_to_idx):
+def create_bow_date_merged(date_docs, tokenizer, vocab_to_idx):
     """
     Arguments
     ---------
@@ -146,7 +146,7 @@ def create_bow(date_docs, tokenizer, vocab_to_idx):
         >>> tokenizer = Tokenizer(Tagfilter({'/R'}))
         >>> date_news = DateDocsDecorator(news, min_doc=10)
         >>> idx_to_vocab, vocab_to_idx = scan_vocabulary(date_news, tokenizer, min_count=5)
-        >>> bow, idx_to_date = create_bow(date_news, tokenizer, vocab_to_idx)
+        >>> bow, idx_to_date = create_bow_date_merged(date_news, tokenizer, vocab_to_idx)
     """
     idx_to_date = []
     rows, cols, data = [], [], []
