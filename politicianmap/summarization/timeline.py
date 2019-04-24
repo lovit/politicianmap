@@ -13,6 +13,8 @@ def summarize_timeline(news, idx_to_date, segments, docvec, idx_to_vocab, penalt
         keywords = extract_keywords(docvec, doc_idx, idx_to_vocab,
             margin=margin, ref_size=ref_size, use_bothside=use_bothside,
             topk1=num_candidates, topk2=num_keywords)
+        if not keywords:
+            continue
         b_date, e_date = idx_to_date[b], idx_to_date[e-1]
         docs = news.get_news(b_date, e_date)
         sents = [sent for doc in docs for sent in doc.split('  ')]
@@ -45,6 +47,9 @@ class PenaltyFunction:
                 if term in sent:
                     return True
             return False
+
+        if not sent.strip():
+            return 2
 
         n_words = len(sent.split())
         if (self.min_len <= n_words <= self.max_len) and sent[-1] == '다':
@@ -80,7 +85,7 @@ def as_html(timeline):
 def keyword_to_str(keywords, n_words_in_line=5):
     n = n_words_in_line
     strs = ''.join(w+', ' if i % n != (n-1) else w+'<br>' for i, w in enumerate(keywords)).strip()
-    if strs[-1] == ',':
+    if strs and strs[-1] == ',':
         strs = strs[:-1]
     return strs
 

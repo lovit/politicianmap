@@ -37,6 +37,8 @@ def summarize(keywords, texts, topk=10, diversity=0.3, penalty=None):
 
     vectorizer = KeywordVectorizer(keywords)
     x = vectorizer.vectorize(texts)
+    if x.nnz == 0:
+        return []
     keyvec = vectorizer.keyword_vector.reshape(1,-1)
     initial_penalty = np.asarray([penalty(sent) for sent in texts])
     idxs = select_keysentences(x, keyvec, texts, initial_penalty, topk, diversity)
