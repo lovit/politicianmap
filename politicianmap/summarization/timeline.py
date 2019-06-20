@@ -67,13 +67,15 @@ def highlight_keyword(sent, keywords):
         sent = sent.replace(keyword, ' [%s]' % keyword.strip())
     return sent
 
-def as_html(timeline):
+def as_html(timeline, only_keysent_term=False):
     tr = '<tr><th class="tg-j4kc">Period</th><th class="tg-uqo3">Keywords</th><th class="tg-uqo3">Key sentences</th></tr>'
     even_tr = '\n<tr><td class="tg-baqh">{}<br>~<br>{}</td><td class="tg-0lax">{}</td><td class="tg-0lax">{}</td></tr>'
     odd_tr = '\n<tr><td class="tg-uqo3">{}<br>~<br>{}</td><td class="tg-kftd">{}</td><td class="tg-kftd">{}</td></tr>'
     for i, (b_date, e_date, keywords, keysentences) in enumerate(timeline):
         keysents = ' '.join(keysentences)
-        keywords = [w for w, _, _ in keywords if w in keysents]
+        keywords = [w for w, _, _ in keywords]
+        if only_keysent_term:
+            keywords = [w for w in keywords if w in keysents]
         keywords_str = keyword_to_str(keywords)
         keysents_str = keysent_to_str(keysentences)
         if i % 2 == 0:
